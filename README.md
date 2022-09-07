@@ -62,7 +62,7 @@ ruby -Ilib script.rb
 Please follow the [installation](#installation) procedure and then run the following code:
 
 ```ruby
-require "hello_sign"
+require "hellosign-ruby-sdk"
 
 HelloSign.configure do |config|
   # Configure HTTP basic authorization: api_key
