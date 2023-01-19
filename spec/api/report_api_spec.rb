@@ -1,7 +1,7 @@
 =begin
-#HelloSign API
+#Dropbox Sign API
 
-#HelloSign v3 API
+#Dropbox Sign v3 API
 
 The version of the OpenAPI document: 3.0.0
 Contact: apisupport@hellosign.com
@@ -14,12 +14,9 @@ require 'spec_helper'
 require 'json_spec'
 require_relative '../test_utils'
 
-config = HelloSign.configure
-api_client = HelloSign::ApiClient.new(config)
-
-describe HelloSign::ReportApi do
+describe Dropbox::Sign::ReportApi do
   context 'ReportApiTest' do
-    api = HelloSign::ReportApi.new
+    api = Dropbox::Sign::ReportApi.new
 
     it 'testReportCreate' do
       request_class = 'ReportCreateRequest'
@@ -29,13 +26,13 @@ describe HelloSign::ReportApi do
       response_data = get_fixture_data(response_class)[:default]
 
       set_expected_response(200, JSON.dump(response_data))
-      expected = api_client.convert_to_type(response_data, response_class) || ReportCreateResponse
-      obj = api_client.convert_to_type(request_data, request_class) || ReportCreateRequest
+      expected = Dropbox::Sign::ReportCreateResponse.init(response_data)
+      obj = Dropbox::Sign::ReportCreateRequest.init(request_data)
 
       result = api.report_create(obj)
 
-      expect(result.class.to_s).to eq("HelloSign::#{response_class}")
-      expect(result.to_json).to be_json_eql(expected.to_json)
+      expect(result.class.to_s).to eq("Dropbox::Sign::#{response_class}")
+      expect(result.to_json).to be_json_eql(JSON.dump(expected))
     end
   end
 end

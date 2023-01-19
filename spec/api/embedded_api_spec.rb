@@ -1,7 +1,7 @@
 =begin
-#HelloSign API
+#Dropbox Sign API
 
-#HelloSign v3 API
+#Dropbox Sign v3 API
 
 The version of the OpenAPI document: 3.0.0
 Contact: apisupport@hellosign.com
@@ -14,12 +14,9 @@ require 'spec_helper'
 require 'json_spec'
 require_relative '../test_utils'
 
-config = HelloSign.configure
-api_client = HelloSign::ApiClient.new(config)
-
-describe HelloSign::EmbeddedApi do
+describe Dropbox::Sign::EmbeddedApi do
   context 'EmbeddedApiTest' do
-    api = HelloSign::EmbeddedApi.new
+    api = Dropbox::Sign::EmbeddedApi.new
 
     it 'testEmbeddedEditUrl' do
       template_id = '5de8179668f2033afac48da1868d0093bf133266'
@@ -31,13 +28,13 @@ describe HelloSign::EmbeddedApi do
       response_data = get_fixture_data(response_class)[:default]
 
       set_expected_response(200, JSON.dump(response_data))
-      expected = api_client.convert_to_type(response_data, response_class) ||EmbeddedEditUrlResponse
-      obj = api_client.convert_to_type(request_data, request_class) || EmbeddedEditUrlRequest
+      expected = Dropbox::Sign::EmbeddedEditUrlResponse.init(response_data)
+      obj = Dropbox::Sign::EmbeddedEditUrlRequest.init(request_data)
 
       result = api.embedded_edit_url(template_id, obj)
 
-      expect(result.class.to_s).to eq("HelloSign::#{response_class}")
-      expect(result.to_json).to be_json_eql(expected.to_json)
+      expect(result.class.to_s).to eq("Dropbox::Sign::#{response_class}")
+      expect(result.to_json).to be_json_eql(JSON.dump(expected))
     end
 
     it 'testEmbeddedSignUrl' do
@@ -47,12 +44,12 @@ describe HelloSign::EmbeddedApi do
       response_data = get_fixture_data(response_class)[:default]
 
       set_expected_response(200, JSON.dump(response_data))
-      expected = api_client.convert_to_type(response_data, response_class) || EmbeddedSignUrlResponse
+      expected = Dropbox::Sign::EmbeddedSignUrlResponse.init(response_data)
 
       result = api.embedded_sign_url(signature_id)
 
-      expect(result.class.to_s).to eq("HelloSign::#{response_class}")
-      expect(result.to_json).to be_json_eql(expected.to_json)
+      expect(result.class.to_s).to eq("Dropbox::Sign::#{response_class}")
+      expect(result.to_json).to be_json_eql(JSON.dump(expected))
     end
   end
 end

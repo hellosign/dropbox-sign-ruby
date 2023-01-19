@@ -1,6 +1,6 @@
-# HelloSign::SignatureRequestBulkCreateEmbeddedWithTemplateRequest
+# Dropbox::Sign::SignatureRequestBulkCreateEmbeddedWithTemplateRequest
 
-Calls SignatureRequestBulkSendWithTemplate in controller
+
 
 ## Properties
 

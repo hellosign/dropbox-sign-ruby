@@ -1,6 +1,6 @@
-require "hellosign-ruby-sdk"
+require "dropbox-sign"
 
-HelloSign.configure do |config|
+Dropbox::Sign.configure do |config|
   # Configure HTTP basic authorization: api_key
   config.username = "YOUR_API_KEY"
 
@@ -8,16 +8,16 @@ HelloSign.configure do |config|
   # config.access_token = "YOUR_ACCESS_TOKEN"
 end
 
-api = HelloSign::TemplateApi.new
+template_api = Dropbox::Sign::TemplateApi.new
 
-data = HelloSign::TemplateAddUserRequest.new
-data.email_address = "george@hellosign.com"
+data = Dropbox::Sign::TemplateAddUserRequest.new
+data.email_address = "george@dropboxsign.com"
 
 template_id = "f57db65d3f933b5316d398057a36176831451a35"
 
 begin
-  result = api.template_add_user(template_id, data)
+  result = template_api.template_add_user(template_id, data)
   p result
-rescue HelloSign::ApiError => e
-  puts "Exception when calling HelloSign API: #{e}"
+rescue Dropbox::Sign::ApiError => e
+  puts "Exception when calling Dropbox Sign API: #{e}"
 end
