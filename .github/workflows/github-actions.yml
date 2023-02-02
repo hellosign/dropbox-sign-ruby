@@ -11,23 +11,23 @@ on:
     branches: [ main ]
 
 jobs:
-#  build:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout Repo
-#        uses: actions/checkout@v3
-#
-#      - name: Build SDK
-#        run: ./run-build
-#
-#      - name: Ensure no changes in Generated Code
-#        run: ./bin/check-clean-git-status
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Build SDK
+        run: ./run-build
+
+      - name: Ensure no changes in Generated Code
+        run: ./bin/check-clean-git-status
 
   publish:
     runs-on: ubuntu-latest
     #if: github.repository == 'hellosign/dropbox-sign-ruby' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     if: github.repository == 'hellosign/dropbox-sign-ruby'
-#    needs: [ build ]
+    needs: [ build ]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -35,7 +35,18 @@ jobs:
       - name: Retrieve version
         run: echo "PACKAGE_VERSION=$(cat VERSION)" >> $GITHUB_ENV
 
-      - name: Release Gem
-        run: ./bin/ruby ./bin/release
-        env:
-          RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
+#      - name: Release Gem
+#        run: ./bin/ruby ./bin/release
+#        env:
+#          RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
+
+      - name: Create tag
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/" + env.PACKAGE_VERSION,
+              sha: context.sha
+            })

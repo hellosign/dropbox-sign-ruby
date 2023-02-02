@@ -33,4 +33,7 @@ rm -rf pkg
 rake build
 
 echo "Pushing release"
-gem push --config-file=~/.gem/credentials --key=rubygems ./pkg/dropbox-sign-${PACKAGE_VERSION}.gem
+gem push \
+  --config-file=~/.gem/credentials \
+  --key=rubygems \
+  ./pkg/dropbox-sign-${PACKAGE_VERSION}.gem
