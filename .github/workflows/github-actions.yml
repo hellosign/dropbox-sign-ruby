@@ -36,7 +36,6 @@ jobs:
         run: echo "PACKAGE_VERSION=$(cat VERSION)" >> $GITHUB_ENV
 
       - name: Release Gem
-        run: ./bin/release
+        run: ./bin/ruby ./bin/release
         env:
           RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
-          PACKAGE_VERSION: $ {{ env.PACKAGE_VERSION }}

@@ -5,6 +5,11 @@ set -e
 DIR=$(cd `dirname $0` && pwd)
 ROOT_DIR="${DIR}/.."
 
+PACKAGE_VERSION=$(cat "${ROOT_DIR}/VERSION")
+
+echo "Building for release ${PACKAGE_VERSION}"
+echo "---"
+
 echo "Setting up gem credentials..."
 set +x
 mkdir -p ~/.gem
