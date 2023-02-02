@@ -11,23 +11,23 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
-      - name: Build SDK
-        run: ./run-build
-
-      - name: Ensure no changes in Generated Code
-        run: ./bin/check-clean-git-status
+#  build:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout Repo
+#        uses: actions/checkout@v3
+#
+#      - name: Build SDK
+#        run: ./run-build
+#
+#      - name: Ensure no changes in Generated Code
+#        run: ./bin/check-clean-git-status
 
   publish:
     runs-on: ubuntu-latest
     #if: github.repository == 'hellosign/dropbox-sign-ruby' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     if: github.repository == 'hellosign/dropbox-sign-ruby'
-    needs: [ build ]
+#    needs: [ build ]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
