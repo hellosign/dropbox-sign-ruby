@@ -1,0 +1,31 @@
+#!/bin/sh
+
+set -e
+
+DIR=$(cd `dirname $0` && pwd)
+ROOT_DIR="${DIR}/.."
+
+echo "Setting up gem credentials..."
+set +x
+mkdir -p ~/.gem
+
+cat << EOF > ~/.gem/credentials
+---
+:rubygems_api_key: ${RUBYGEMS_API_KEY}
+EOF
+
+chmod 0600 ~/.gem/credentials
+set -x
+
+cd "${ROOT_DIR}"
+
+echo "Installing dependencies..."
+gem install bundler > /dev/null
+bundle install > /dev/null
+
+echo "Building..."
+rm -rf pkg
+rake build
+
+echo "Pushing release"
+gem push -k rubygems ./pkg/dropbox-sign-${PACKAGE_VERSION}.gem
