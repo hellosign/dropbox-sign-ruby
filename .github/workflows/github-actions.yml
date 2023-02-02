@@ -25,7 +25,8 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    if: github.repository == 'hellosign/dropbox-sign-ruby' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    #if: github.repository == 'hellosign/dropbox-sign-ruby' && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: github.repository == 'hellosign/dropbox-sign-ruby' && github.ref == 'refs/heads/main'
     needs: [ build ]
     steps:
       - name: Checkout
