@@ -17,17 +17,21 @@ module Dropbox
 end
 
 module Dropbox::Sign
-  class TemplateResponseDocumentCustomField
+  # An array of Form Field objects containing the name and type of each named field.
+  class TemplateResponseDocumentCustomFieldBase
+    # @return [String]
+    attr_accessor :type
+
+    # The unique ID for this field.
+    # @return [String]
+    attr_accessor :api_id
+
     # The name of the Custom Field.
     # @return [String]
     attr_accessor :name
 
-    # The type of this Custom Field. Only `text` and `checkbox` are currently supported.
-    # @return [String]
-    attr_accessor :type
-
-    # The signer of the Custom Field.
-    # @return [String]
+    # The signer of the Custom Field. Can be `null` if field is a merge field (assigned to Sender).
+    # @return [String, nil]
     attr_accessor :signer
 
     # The horizontal offset in pixels for this form field.
@@ -50,77 +54,28 @@ module Dropbox::Sign
     # @return [Boolean]
     attr_accessor :required
 
-    # The unique ID for this field.
-    # @return [String]
-    attr_accessor :api_id
-
     # The name of the group this field is in. If this field is not a group, this defaults to `null`.
     # @return [String, nil]
     attr_accessor :group
 
-    # @return [TemplateResponseFieldAvgTextLength]
-    attr_accessor :avg_text_length
-
-    # Whether this form field is multiline text.
-    # @return [Boolean, nil]
-    attr_accessor :is_multiline
-
-    # Original font size used in this form field's text.
-    # @return [Integer, nil]
-    attr_accessor :original_font_size
-
-    # Font family used in this form field's text.
-    # @return [String, nil]
-    attr_accessor :font_family
-
-    # Deprecated. Use `form_fields` inside the [documents](https://developers.hellosign.com/api/reference/operation/templateGet/#!c=200&path=template/documents&t=response) array instead.
-    # @return [Object, nil]
-    attr_accessor :named_form_fields
-
-    # @return [String, nil]
-    attr_accessor :reusable_form_id
-
-    class EnumAttributeValidator
-      attr_reader :datatype
-      attr_reader :allowable_values
-
-      def initialize(datatype, allowable_values)
-        @allowable_values = allowable_values.map do |value|
-          case datatype.to_s
-          when /Integer/i
-            value.to_i
-          when /Float/i
-            value.to_f
-          else
-            value
-          end
-        end
-      end
-
-      def valid?(value)
-        !value || allowable_values.include?(value)
-      end
-    end
+    # Final font size used by this form field.
+    # @return [Integer]
+    attr_accessor :font_size
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'name' => :'name',
         :'type' => :'type',
+        :'api_id' => :'api_id',
+        :'name' => :'name',
         :'signer' => :'signer',
         :'x' => :'x',
         :'y' => :'y',
         :'width' => :'width',
         :'height' => :'height',
         :'required' => :'required',
-        :'api_id' => :'api_id',
         :'group' => :'group',
-        :'avg_text_length' => :'avg_text_length',
-        :'is_multiline' => :'isMultiline',
-        :'original_font_size' => :'originalFontSize',
-        :'font_family' => :'fontFamily',
-        :'named_form_fields' => :'named_form_fields',
-        :'reusable_form_id' => :'reusable_form_id'
+        :'font_size' => :'fontSize'
       }
     end
 
@@ -137,22 +92,17 @@ module Dropbox::Sign
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'name' => :'String',
         :'type' => :'String',
+        :'api_id' => :'String',
+        :'name' => :'String',
         :'signer' => :'String',
         :'x' => :'Integer',
         :'y' => :'Integer',
         :'width' => :'Integer',
         :'height' => :'Integer',
         :'required' => :'Boolean',
-        :'api_id' => :'String',
         :'group' => :'String',
-        :'avg_text_length' => :'TemplateResponseFieldAvgTextLength',
-        :'is_multiline' => :'Boolean',
-        :'original_font_size' => :'Integer',
-        :'font_family' => :'String',
-        :'named_form_fields' => :'Object',
-        :'reusable_form_id' => :'String'
+        :'font_size' => :'Integer'
       }
     end
 
@@ -164,12 +114,8 @@ module Dropbox::Sign
     # List of attributes with nullable: true
     def self.openapi_nullable
       Set.new([
+        :'signer',
         :'group',
-        :'is_multiline',
-        :'original_font_size',
-        :'font_family',
-        :'named_form_fields',
-        :'reusable_form_id'
       ])
     end
 
@@ -178,37 +124,49 @@ module Dropbox::Sign
       self.openapi_nullable
     end
 
-    # Attempt to instantiate and hydrate a new instance of this class
-    # @param [Object] data Data to be converted
-    # @return [TemplateResponseDocumentCustomField]
-    def self.init(data)
-      return ApiClient.default.convert_to_type(
-        data,
-        "TemplateResponseDocumentCustomField"
-      ) || TemplateResponseDocumentCustomField.new
+    # discriminator's property name in OpenAPI v3
+    def self.openapi_discriminator_name
+      :'type'
+    end
+
+    def self.discriminator_class_name(value)
+      return nil unless value.is_a?(String)
+
+      if value == 'checkbox'
+        return "Dropbox::Sign::TemplateResponseDocumentCustomFieldCheckbox"
+      end
+      if value == 'text'
+        return "Dropbox::Sign::TemplateResponseDocumentCustomFieldText"
+      end
+
+      return nil
     end
 
     # Initializes the object
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `Dropbox::Sign::TemplateResponseDocumentCustomField` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `Dropbox::Sign::TemplateResponseDocumentCustomFieldBase` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.merged_attributes.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `Dropbox::Sign::TemplateResponseDocumentCustomField`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `Dropbox::Sign::TemplateResponseDocumentCustomFieldBase`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'name')
-        self.name = attributes[:'name']
-      end
-
       if attributes.key?(:'type')
         self.type = attributes[:'type']
+      end
+
+      if attributes.key?(:'api_id')
+        self.api_id = attributes[:'api_id']
+      end
+
+      if attributes.key?(:'name')
+        self.name = attributes[:'name']
       end
 
       if attributes.key?(:'signer')
@@ -235,36 +193,12 @@ module Dropbox::Sign
         self.required = attributes[:'required']
       end
 
-      if attributes.key?(:'api_id')
-        self.api_id = attributes[:'api_id']
-      end
-
       if attributes.key?(:'group')
         self.group = attributes[:'group']
       end
 
-      if attributes.key?(:'avg_text_length')
-        self.avg_text_length = attributes[:'avg_text_length']
-      end
-
-      if attributes.key?(:'is_multiline')
-        self.is_multiline = attributes[:'is_multiline']
-      end
-
-      if attributes.key?(:'original_font_size')
-        self.original_font_size = attributes[:'original_font_size']
-      end
-
-      if attributes.key?(:'font_family')
-        self.font_family = attributes[:'font_family']
-      end
-
-      if attributes.key?(:'named_form_fields')
-        self.named_form_fields = attributes[:'named_form_fields']
-      end
-
-      if attributes.key?(:'reusable_form_id')
-        self.reusable_form_id = attributes[:'reusable_form_id']
+      if attributes.key?(:'font_size')
+        self.font_size = attributes[:'font_size']
       end
     end
 
@@ -272,25 +206,18 @@ module Dropbox::Sign
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
+      if @type.nil?
+        invalid_properties.push('invalid value for "type", type cannot be nil.')
+      end
+
       invalid_properties
     end
 
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
-      type_validator = EnumAttributeValidator.new('String', ["text", "checkbox"])
-      return false unless type_validator.valid?(@type)
+      return false if @type.nil?
       true
-    end
-
-    # Custom attribute writer method checking allowed values (enum).
-    # @param [Object] type Object to be assigned
-    def type=(type)
-      validator = EnumAttributeValidator.new('String', ["text", "checkbox"])
-      unless validator.valid?(type)
-        fail ArgumentError, "invalid value for \"type\", must be one of #{validator.allowable_values}."
-      end
-      @type = type
     end
 
     # Checks equality by comparing each attribute.
@@ -298,22 +225,17 @@ module Dropbox::Sign
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          name == o.name &&
           type == o.type &&
+          api_id == o.api_id &&
+          name == o.name &&
           signer == o.signer &&
           x == o.x &&
           y == o.y &&
           width == o.width &&
           height == o.height &&
           required == o.required &&
-          api_id == o.api_id &&
           group == o.group &&
-          avg_text_length == o.avg_text_length &&
-          is_multiline == o.is_multiline &&
-          original_font_size == o.original_font_size &&
-          font_family == o.font_family &&
-          named_form_fields == o.named_form_fields &&
-          reusable_form_id == o.reusable_form_id
+          font_size == o.font_size
     end
 
     # @see the `==` method
@@ -325,13 +247,20 @@ module Dropbox::Sign
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [name, type, signer, x, y, width, height, required, api_id, group, avg_text_length, is_multiline, original_font_size, font_family, named_form_fields, reusable_form_id].hash
+      [type, api_id, name, signer, x, y, width, height, required, group, font_size].hash
     end
 
     # Builds the object from hash
     # @param [Hash] attributes Model attributes in the form of hash
     # @return [Object] Returns the model itself
     def self.build_from_hash(attributes)
+      if !attributes[self.openapi_discriminator_name].nil?
+        klass = self.discriminator_class_name(attributes[self.openapi_discriminator_name])
+        if klass != new.class.to_s
+          obj = Object.const_get(klass).new.build_from_hash(attributes)
+          return obj
+        end
+      end
       new.build_from_hash(attributes)
     end
 

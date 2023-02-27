@@ -17,183 +17,103 @@ module Dropbox
 end
 
 module Dropbox::Sign
-  class TemplateResponseDocumentStaticField
-    # The name of the static field.
-    # @return [String]
-    attr_accessor :name
-
-    # The type of this static field. See [field types](/api/reference/constants/#field-types).
+  # This class extends `TemplateResponseDocumentFormFieldBase`
+  class TemplateResponseDocumentFormFieldDropdown < TemplateResponseDocumentFormFieldBase
+    # The type of this form field. See [field types](/api/reference/constants/#field-types).  * Text Field uses `TemplateResponseDocumentFormFieldText` * Dropdown Field uses `TemplateResponseDocumentFormFieldDropdown` * Hyperlink Field uses `TemplateResponseDocumentFormFieldHyperlink` * Checkbox Field uses `TemplateResponseDocumentFormFieldCheckbox` * Radio Field uses `TemplateResponseDocumentFormFieldRadio` * Signature Field uses `TemplateResponseDocumentFormFieldSignature` * Date Signed Field uses `TemplateResponseDocumentFormFieldDateSigned` * Initials Field uses `TemplateResponseDocumentFormFieldInitials`
     # @return [String]
     attr_accessor :type
-
-    # The signer of the Static Field.
-    # @return [String]
-    attr_accessor :signer
-
-    # The horizontal offset in pixels for this static field.
-    # @return [Integer]
-    attr_accessor :x
-
-    # The vertical offset in pixels for this static field.
-    # @return [Integer]
-    attr_accessor :y
-
-    # The width in pixels of this static field.
-    # @return [Integer]
-    attr_accessor :width
-
-    # The height in pixels of this static field.
-    # @return [Integer]
-    attr_accessor :height
-
-    # Boolean showing whether or not this field is required.
-    # @return [Boolean]
-    attr_accessor :required
-
-    # A unique id for the static field.
-    # @return [String]
-    attr_accessor :api_id
-
-    # The name of the group this field is in. If this field is not a group, this defaults to `null`.
-    # @return [String, nil]
-    attr_accessor :group
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'name' => :'name',
-        :'type' => :'type',
-        :'signer' => :'signer',
-        :'x' => :'x',
-        :'y' => :'y',
-        :'width' => :'width',
-        :'height' => :'height',
-        :'required' => :'required',
-        :'api_id' => :'api_id',
-        :'group' => :'group'
+        :'type' => :'type'
       }
     end
 
-    # Returns all the JSON keys this model knows about
+    # Returns all the JSON keys this model knows about, including the ones defined in its parent(s)
     def self.acceptable_attributes
-      attribute_map.values
+      attribute_map.values.concat(superclass.acceptable_attributes)
     end
 
     # Returns attribute map of this model + parent
     def self.merged_attributes
-      self.attribute_map
+      self.superclass.attribute_map.merge(self.attribute_map)
     end
 
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'name' => :'String',
-        :'type' => :'String',
-        :'signer' => :'String',
-        :'x' => :'Integer',
-        :'y' => :'Integer',
-        :'width' => :'Integer',
-        :'height' => :'Integer',
-        :'required' => :'Boolean',
-        :'api_id' => :'String',
-        :'group' => :'String'
+        :'type' => :'String'
       }
     end
 
     # Attribute type mapping of this model + parent
     def self.merged_types
-      self.openapi_types
+      self.superclass.openapi_types.merge(self.openapi_types)
     end
 
     # List of attributes with nullable: true
     def self.openapi_nullable
       Set.new([
-        :'group'
       ])
     end
 
     # Returns list of attributes with nullable: true of this model + parent
     def self.merged_nullable
-      self.openapi_nullable
+      self.superclass.openapi_nullable.merge(self.openapi_nullable)
     end
 
     # Attempt to instantiate and hydrate a new instance of this class
     # @param [Object] data Data to be converted
-    # @return [TemplateResponseDocumentStaticField]
+    # @return [TemplateResponseDocumentFormFieldDropdown]
     def self.init(data)
       return ApiClient.default.convert_to_type(
         data,
-        "TemplateResponseDocumentStaticField"
-      ) || TemplateResponseDocumentStaticField.new
+        "TemplateResponseDocumentFormFieldDropdown"
+      ) || TemplateResponseDocumentFormFieldDropdown.new
     end
 
     # Initializes the object
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `Dropbox::Sign::TemplateResponseDocumentStaticField` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `Dropbox::Sign::TemplateResponseDocumentFormFieldDropdown` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.merged_attributes.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `Dropbox::Sign::TemplateResponseDocumentStaticField`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `Dropbox::Sign::TemplateResponseDocumentFormFieldDropdown`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'name')
-        self.name = attributes[:'name']
-      end
+      # call parent's initialize
+      super(attributes)
 
       if attributes.key?(:'type')
         self.type = attributes[:'type']
-      end
-
-      if attributes.key?(:'signer')
-        self.signer = attributes[:'signer']
-      end
-
-      if attributes.key?(:'x')
-        self.x = attributes[:'x']
-      end
-
-      if attributes.key?(:'y')
-        self.y = attributes[:'y']
-      end
-
-      if attributes.key?(:'width')
-        self.width = attributes[:'width']
-      end
-
-      if attributes.key?(:'height')
-        self.height = attributes[:'height']
-      end
-
-      if attributes.key?(:'required')
-        self.required = attributes[:'required']
-      end
-
-      if attributes.key?(:'api_id')
-        self.api_id = attributes[:'api_id']
-      end
-
-      if attributes.key?(:'group')
-        self.group = attributes[:'group']
+      else
+        self.type = 'dropdown'
       end
     end
 
     # Show invalid properties with the reasons. Usually used together with valid?
     # @return Array for valid properties with the reasons
     def list_invalid_properties
-      invalid_properties = Array.new
+      invalid_properties = super
+      if @type.nil?
+        invalid_properties.push('invalid value for "type", type cannot be nil.')
+      end
+
       invalid_properties
     end
 
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
-      true
+      return false if @type.nil?
+      true && super
     end
 
     # Checks equality by comparing each attribute.
@@ -201,16 +121,7 @@ module Dropbox::Sign
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          name == o.name &&
-          type == o.type &&
-          signer == o.signer &&
-          x == o.x &&
-          y == o.y &&
-          width == o.width &&
-          height == o.height &&
-          required == o.required &&
-          api_id == o.api_id &&
-          group == o.group
+          type == o.type && super(o)
     end
 
     # @see the `==` method
@@ -222,7 +133,7 @@ module Dropbox::Sign
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [name, type, signer, x, y, width, height, required, api_id, group].hash
+      [type].hash
     end
 
     # Builds the object from hash
@@ -237,6 +148,7 @@ module Dropbox::Sign
     # @return [Object] Returns the model itself
     def build_from_hash(attributes)
       return nil unless attributes.is_a?(Hash)
+      super(attributes)
       attribute_map = self.class.merged_attributes
 
       self.class.merged_types.each_pair do |key, type|
@@ -314,7 +226,7 @@ module Dropbox::Sign
     # Returns the object in the form of hash
     # @return [Hash] Returns the object in the form of hash
     def to_hash(include_nil = true)
-      hash = {}
+      hash = super
       self.class.merged_attributes.each_pair do |attr, param|
         value = self.send(attr)
         if value.nil?
