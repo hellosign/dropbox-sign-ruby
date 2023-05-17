@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    dropbox-sign (1.1.1)
+    dropbox-sign (1.1.2)
       typhoeus (~> 1.0, >= 1.0.1)
 
 GEM
@@ -63,6 +63,7 @@ GEM
 PLATFORMS
   aarch64-linux
   arm64-darwin-21
+  arm64-darwin-22
   x86_64-darwin-20
   x86_64-linux
 
