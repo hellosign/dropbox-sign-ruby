@@ -17,34 +17,65 @@ module Dropbox
 end
 
 module Dropbox::Sign
-  class SignatureRequestBulkCreateEmbeddedWithTemplateRequest
-    # Use `template_ids` to create a SignatureRequest from one or more templates, in the order in which the template will be used.
-    # @return [Array<String>]
-    attr_accessor :template_ids
-
+  class SignatureRequestEditEmbeddedRequest
     # Client id of the app you're using to create this embedded signature request. Used for security purposes.
     # @return [String]
     attr_accessor :client_id
 
-    # `signer_file` is a CSV file defining values and options for signer fields. Required unless a `signer_list` is used, you may not use both. The CSV can have the following columns:  - `name`: the name of the signer filling the role of RoleName - `email_address`: email address of the signer filling the role of RoleName - `pin`: the 4- to 12-character access code that will secure this signer's signature page (optional) - `sms_phone_number`: An E.164 formatted phone number that will receive a code via SMS to access this signer's signature page. (optional)      By using the feature, you agree you are responsible for obtaining a signer's consent to receive text messages from Dropbox Sign related to this signature request and confirm you have obtained such consent from all signers prior to enabling SMS delivery for this signature request. [Learn more](https://faq.hellosign.com/hc/en-us/articles/15815316468877-Dropbox-Sign-SMS-tools-add-on).      **Note**: Not available in test mode and requires a Standard plan or higher. - `*_field`: any column with a _field\" suffix will be treated as a custom field (optional)      You may only specify field values here, any other options should be set in the custom_fields request parameter.  Example CSV:  ``` name, email_address, pin, company_field George, george@example.com, d79a3td, ABC Corp Mary, mary@example.com, gd9as5b, 123 LLC ```
-    # @return [File]
-    attr_accessor :signer_file
+    # Use `files[]` to indicate the uploaded file(s) to send for signature.  This endpoint requires either **files** or **file_urls[]**, but not both.
+    # @return [Array<File>]
+    attr_accessor :files
 
-    # `signer_list` is an array defining values and options for signer fields. Required unless a `signer_file` is used, you may not use both.
-    # @return [Array<SubBulkSignerList>]
-    attr_accessor :signer_list
+    # Use `file_urls[]` to have Dropbox Sign download the file(s) to send for signature.  This endpoint requires either **files** or **file_urls[]**, but not both.
+    # @return [Array<String>]
+    attr_accessor :file_urls
+
+    # Add Signers to your Signature Request.  This endpoint requires either **signers** or **grouped_signers**, but not both.
+    # @return [Array<SubSignatureRequestSigner>]
+    attr_accessor :signers
+
+    # Add Grouped Signers to your Signature Request.  This endpoint requires either **signers** or **grouped_signers**, but not both.
+    # @return [Array<SubSignatureRequestGroupedSigners>]
+    attr_accessor :grouped_signers
 
     # Allows signers to decline to sign a document if `true`. Defaults to `false`.
     # @return [Boolean]
     attr_accessor :allow_decline
 
-    # Add CC email recipients. Required when a CC role exists for the Template.
-    # @return [Array<SubCC>]
-    attr_accessor :ccs
+    # Allows signers to reassign their signature requests to other signers if set to `true`. Defaults to `false`.  **Note**: Only available for Premium plan.
+    # @return [Boolean]
+    attr_accessor :allow_reassign
+
+    # A list describing the attachments
+    # @return [Array<SubAttachment>]
+    attr_accessor :attachments
+
+    # The email addresses that should be CCed.
+    # @return [Array<String>]
+    attr_accessor :cc_email_addresses
 
     # When used together with merge fields, `custom_fields` allows users to add pre-filled data to their signature requests.  Pre-filled data can be used with \"send-once\" signature requests by adding merge fields with `form_fields_per_document` or [Text Tags](https://app.hellosign.com/api/textTagsWalkthrough#TextTagIntro) while passing values back with `custom_fields` together in one API call.  For using pre-filled on repeatable signature requests, merge fields are added to templates in the Dropbox Sign UI or by calling [/template/create_embedded_draft](/api/reference/operation/templateCreateEmbeddedDraft) and then passing `custom_fields` on subsequent signature requests referencing that template.
     # @return [Array<SubCustomField>]
     attr_accessor :custom_fields
+
+    # @return [SubFieldOptions]
+    attr_accessor :field_options
+
+    # Group information for fields defined in `form_fields_per_document`. String-indexed JSON array with `group_label` and `requirement` keys. `form_fields_per_document` must contain fields referencing a group defined in `form_field_groups`.
+    # @return [Array<SubFormFieldGroup>]
+    attr_accessor :form_field_groups
+
+    # Conditional Logic rules for fields defined in `form_fields_per_document`.
+    # @return [Array<SubFormFieldRule>]
+    attr_accessor :form_field_rules
+
+    # The fields that should appear on the document, expressed as an array of objects. (For more details you can read about it here: [Using Form Fields per Document](/docs/openapi/form-fields-per-document).)  **NOTE**: Fields like **text**, **dropdown**, **checkbox**, **radio**, and **hyperlink** have additional required and optional parameters. Check out the list of [additional parameters](/api/reference/constants/#form-fields-per-document) for these field types.  * Text Field use `SubFormFieldsPerDocumentText` * Dropdown Field use `SubFormFieldsPerDocumentDropdown` * Hyperlink Field use `SubFormFieldsPerDocumentHyperlink` * Checkbox Field use `SubFormFieldsPerDocumentCheckbox` * Radio Field use `SubFormFieldsPerDocumentRadio` * Signature Field use `SubFormFieldsPerDocumentSignature` * Date Signed Field use `SubFormFieldsPerDocumentDateSigned` * Initials Field use `SubFormFieldsPerDocumentInitials` * Text Merge Field use `SubFormFieldsPerDocumentTextMerge` * Checkbox Merge Field use `SubFormFieldsPerDocumentCheckboxMerge`
+    # @return [Array<SubFormFieldsPerDocumentBase>]
+    attr_accessor :form_fields_per_document
+
+    # Enables automatic Text Tag removal when set to true.  **NOTE**: Removing text tags this way can cause unwanted clipping. We recommend leaving this setting on `false` and instead hiding your text tags using white text or a similar approach. See the [Text Tags Walkthrough](https://app.hellosign.com/api/textTagsWalkthrough#TextTagIntro) for more information.
+    # @return [Boolean]
+    attr_accessor :hide_text_tags
 
     # The custom message in the email that will be sent to the signers.
     # @return [String]
@@ -54,9 +85,8 @@ module Dropbox::Sign
     # @return [Hash<String, Object>]
     attr_accessor :metadata
 
-    # The URL you want signers redirected to after they successfully sign.
-    # @return [String]
-    attr_accessor :signing_redirect_url
+    # @return [SubSigningOptions]
+    attr_accessor :signing_options
 
     # The subject in the email that will be sent to the signers.
     # @return [String]
@@ -70,22 +100,45 @@ module Dropbox::Sign
     # @return [String]
     attr_accessor :title
 
+    # Send with a value of `true` if you wish to enable [Text Tags](https://app.hellosign.com/api/textTagsWalkthrough#TextTagIntro) parsing in your document. Defaults to disabled, or `false`.
+    # @return [Boolean]
+    attr_accessor :use_text_tags
+
+    # Controls whether [auto fill fields](https://faq.hellosign.com/hc/en-us/articles/360051467511-Auto-Fill-Fields) can automatically populate a signer's information during signing.  ⚠️ **Note** ⚠️: Keep your signer's information safe by ensuring that the _signer on your signature request is the intended party_ before using this feature.
+    # @return [Boolean]
+    attr_accessor :populate_auto_fill_fields
+
+    # When the signature request will expire. Unsigned signatures will be moved to the expired status, and no longer signable. See [Signature Request Expiration Date](https://developers.hellosign.com/docs/signature-request/expiration/) for details.
+    # @return [Integer, nil]
+    attr_accessor :expires_at
+
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'template_ids' => :'template_ids',
         :'client_id' => :'client_id',
-        :'signer_file' => :'signer_file',
-        :'signer_list' => :'signer_list',
+        :'files' => :'files',
+        :'file_urls' => :'file_urls',
+        :'signers' => :'signers',
+        :'grouped_signers' => :'grouped_signers',
         :'allow_decline' => :'allow_decline',
-        :'ccs' => :'ccs',
+        :'allow_reassign' => :'allow_reassign',
+        :'attachments' => :'attachments',
+        :'cc_email_addresses' => :'cc_email_addresses',
         :'custom_fields' => :'custom_fields',
+        :'field_options' => :'field_options',
+        :'form_field_groups' => :'form_field_groups',
+        :'form_field_rules' => :'form_field_rules',
+        :'form_fields_per_document' => :'form_fields_per_document',
+        :'hide_text_tags' => :'hide_text_tags',
         :'message' => :'message',
         :'metadata' => :'metadata',
-        :'signing_redirect_url' => :'signing_redirect_url',
+        :'signing_options' => :'signing_options',
         :'subject' => :'subject',
         :'test_mode' => :'test_mode',
-        :'title' => :'title'
+        :'title' => :'title',
+        :'use_text_tags' => :'use_text_tags',
+        :'populate_auto_fill_fields' => :'populate_auto_fill_fields',
+        :'expires_at' => :'expires_at'
       }
     end
 
@@ -102,19 +155,30 @@ module Dropbox::Sign
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'template_ids' => :'Array<String>',
         :'client_id' => :'String',
-        :'signer_file' => :'File',
-        :'signer_list' => :'Array<SubBulkSignerList>',
+        :'files' => :'Array<File>',
+        :'file_urls' => :'Array<String>',
+        :'signers' => :'Array<SubSignatureRequestSigner>',
+        :'grouped_signers' => :'Array<SubSignatureRequestGroupedSigners>',
         :'allow_decline' => :'Boolean',
-        :'ccs' => :'Array<SubCC>',
+        :'allow_reassign' => :'Boolean',
+        :'attachments' => :'Array<SubAttachment>',
+        :'cc_email_addresses' => :'Array<String>',
         :'custom_fields' => :'Array<SubCustomField>',
+        :'field_options' => :'SubFieldOptions',
+        :'form_field_groups' => :'Array<SubFormFieldGroup>',
+        :'form_field_rules' => :'Array<SubFormFieldRule>',
+        :'form_fields_per_document' => :'Array<SubFormFieldsPerDocumentBase>',
+        :'hide_text_tags' => :'Boolean',
         :'message' => :'String',
         :'metadata' => :'Hash<String, Object>',
-        :'signing_redirect_url' => :'String',
+        :'signing_options' => :'SubSigningOptions',
         :'subject' => :'String',
         :'test_mode' => :'Boolean',
-        :'title' => :'String'
+        :'title' => :'String',
+        :'use_text_tags' => :'Boolean',
+        :'populate_auto_fill_fields' => :'Boolean',
+        :'expires_at' => :'Integer'
       }
     end
 
@@ -126,6 +190,7 @@ module Dropbox::Sign
     # List of attributes with nullable: true
     def self.openapi_nullable
       Set.new([
+        :'expires_at'
       ])
     end
 
@@ -136,46 +201,54 @@ module Dropbox::Sign
 
     # Attempt to instantiate and hydrate a new instance of this class
     # @param [Object] data Data to be converted
-    # @return [SignatureRequestBulkCreateEmbeddedWithTemplateRequest]
+    # @return [SignatureRequestEditEmbeddedRequest]
     def self.init(data)
       return ApiClient.default.convert_to_type(
         data,
-        "SignatureRequestBulkCreateEmbeddedWithTemplateRequest"
-      ) || SignatureRequestBulkCreateEmbeddedWithTemplateRequest.new
+        "SignatureRequestEditEmbeddedRequest"
+      ) || SignatureRequestEditEmbeddedRequest.new
     end
 
     # Initializes the object
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `Dropbox::Sign::SignatureRequestBulkCreateEmbeddedWithTemplateRequest` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `Dropbox::Sign::SignatureRequestEditEmbeddedRequest` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.merged_attributes.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `Dropbox::Sign::SignatureRequestBulkCreateEmbeddedWithTemplateRequest`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `Dropbox::Sign::SignatureRequestEditEmbeddedRequest`. Please check the name to make sure it's valid. List of attributes: " + self.class.attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
-
-      if attributes.key?(:'template_ids')
-        if (value = attributes[:'template_ids']).is_a?(Array)
-          self.template_ids = value
-        end
-      end
 
       if attributes.key?(:'client_id')
         self.client_id = attributes[:'client_id']
       end
 
-      if attributes.key?(:'signer_file')
-        self.signer_file = attributes[:'signer_file']
+      if attributes.key?(:'files')
+        if (value = attributes[:'files']).is_a?(Array)
+          self.files = value
+        end
       end
 
-      if attributes.key?(:'signer_list')
-        if (value = attributes[:'signer_list']).is_a?(Array)
-          self.signer_list = value
+      if attributes.key?(:'file_urls')
+        if (value = attributes[:'file_urls']).is_a?(Array)
+          self.file_urls = value
+        end
+      end
+
+      if attributes.key?(:'signers')
+        if (value = attributes[:'signers']).is_a?(Array)
+          self.signers = value
+        end
+      end
+
+      if attributes.key?(:'grouped_signers')
+        if (value = attributes[:'grouped_signers']).is_a?(Array)
+          self.grouped_signers = value
         end
       end
 
@@ -185,9 +258,21 @@ module Dropbox::Sign
         self.allow_decline = false
       end
 
-      if attributes.key?(:'ccs')
-        if (value = attributes[:'ccs']).is_a?(Array)
-          self.ccs = value
+      if attributes.key?(:'allow_reassign')
+        self.allow_reassign = attributes[:'allow_reassign']
+      else
+        self.allow_reassign = false
+      end
+
+      if attributes.key?(:'attachments')
+        if (value = attributes[:'attachments']).is_a?(Array)
+          self.attachments = value
+        end
+      end
+
+      if attributes.key?(:'cc_email_addresses')
+        if (value = attributes[:'cc_email_addresses']).is_a?(Array)
+          self.cc_email_addresses = value
         end
       end
 
@@ -195,6 +280,34 @@ module Dropbox::Sign
         if (value = attributes[:'custom_fields']).is_a?(Array)
           self.custom_fields = value
         end
+      end
+
+      if attributes.key?(:'field_options')
+        self.field_options = attributes[:'field_options']
+      end
+
+      if attributes.key?(:'form_field_groups')
+        if (value = attributes[:'form_field_groups']).is_a?(Array)
+          self.form_field_groups = value
+        end
+      end
+
+      if attributes.key?(:'form_field_rules')
+        if (value = attributes[:'form_field_rules']).is_a?(Array)
+          self.form_field_rules = value
+        end
+      end
+
+      if attributes.key?(:'form_fields_per_document')
+        if (value = attributes[:'form_fields_per_document']).is_a?(Array)
+          self.form_fields_per_document = value
+        end
+      end
+
+      if attributes.key?(:'hide_text_tags')
+        self.hide_text_tags = attributes[:'hide_text_tags']
+      else
+        self.hide_text_tags = false
       end
 
       if attributes.key?(:'message')
@@ -207,8 +320,8 @@ module Dropbox::Sign
         end
       end
 
-      if attributes.key?(:'signing_redirect_url')
-        self.signing_redirect_url = attributes[:'signing_redirect_url']
+      if attributes.key?(:'signing_options')
+        self.signing_options = attributes[:'signing_options']
       end
 
       if attributes.key?(:'subject')
@@ -224,16 +337,28 @@ module Dropbox::Sign
       if attributes.key?(:'title')
         self.title = attributes[:'title']
       end
+
+      if attributes.key?(:'use_text_tags')
+        self.use_text_tags = attributes[:'use_text_tags']
+      else
+        self.use_text_tags = false
+      end
+
+      if attributes.key?(:'populate_auto_fill_fields')
+        self.populate_auto_fill_fields = attributes[:'populate_auto_fill_fields']
+      else
+        self.populate_auto_fill_fields = false
+      end
+
+      if attributes.key?(:'expires_at')
+        self.expires_at = attributes[:'expires_at']
+      end
     end
 
     # Show invalid properties with the reasons. Usually used together with valid?
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
-      if @template_ids.nil?
-        invalid_properties.push('invalid value for "template_ids", template_ids cannot be nil.')
-      end
-
       if @client_id.nil?
         invalid_properties.push('invalid value for "client_id", client_id cannot be nil.')
       end
@@ -256,7 +381,6 @@ module Dropbox::Sign
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
-      return false if @template_ids.nil?
       return false if @client_id.nil?
       return false if !@message.nil? && @message.to_s.length > 5000
       return false if !@subject.nil? && @subject.to_s.length > 255
@@ -305,19 +429,30 @@ module Dropbox::Sign
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          template_ids == o.template_ids &&
           client_id == o.client_id &&
-          signer_file == o.signer_file &&
-          signer_list == o.signer_list &&
+          files == o.files &&
+          file_urls == o.file_urls &&
+          signers == o.signers &&
+          grouped_signers == o.grouped_signers &&
           allow_decline == o.allow_decline &&
-          ccs == o.ccs &&
+          allow_reassign == o.allow_reassign &&
+          attachments == o.attachments &&
+          cc_email_addresses == o.cc_email_addresses &&
           custom_fields == o.custom_fields &&
+          field_options == o.field_options &&
+          form_field_groups == o.form_field_groups &&
+          form_field_rules == o.form_field_rules &&
+          form_fields_per_document == o.form_fields_per_document &&
+          hide_text_tags == o.hide_text_tags &&
           message == o.message &&
           metadata == o.metadata &&
-          signing_redirect_url == o.signing_redirect_url &&
+          signing_options == o.signing_options &&
           subject == o.subject &&
           test_mode == o.test_mode &&
-          title == o.title
+          title == o.title &&
+          use_text_tags == o.use_text_tags &&
+          populate_auto_fill_fields == o.populate_auto_fill_fields &&
+          expires_at == o.expires_at
     end
 
     # @see the `==` method
@@ -329,7 +464,7 @@ module Dropbox::Sign
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [template_ids, client_id, signer_file, signer_list, allow_decline, ccs, custom_fields, message, metadata, signing_redirect_url, subject, test_mode, title].hash
+      [client_id, files, file_urls, signers, grouped_signers, allow_decline, allow_reassign, attachments, cc_email_addresses, custom_fields, field_options, form_field_groups, form_field_rules, form_fields_per_document, hide_text_tags, message, metadata, signing_options, subject, test_mode, title, use_text_tags, populate_auto_fill_fields, expires_at].hash
     end
 
     # Builds the object from hash
