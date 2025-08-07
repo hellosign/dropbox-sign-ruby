@@ -2,8 +2,8 @@ require "json"
 require "dropbox-sign"
 
 Dropbox::Sign.configure do |config|
-  config.username = "YOUR_API_KEY"
-  # config.access_token = "YOUR_ACCESS_TOKEN"
+    config.username = "YOUR_API_KEY"
+    # config.access_token = "YOUR_ACCESS_TOKEN"
 end
 
 signing_options = Dropbox::Sign::SubSigningOptions.new
@@ -45,12 +45,12 @@ signature_request_edit_embedded_request.signing_options = signing_options
 signature_request_edit_embedded_request.signers = signers
 
 begin
-  response = Dropbox::Sign::SignatureRequestApi.new.signature_request_edit_embedded(
-    "fa5c8a0b0f492d768749333ad6fcc214c111e967", # signature_request_id
-      signature_request_edit_embedded_request,
-  )
+    response = Dropbox::Sign::SignatureRequestApi.new.signature_request_edit_embedded(
+        "fa5c8a0b0f492d768749333ad6fcc214c111e967", # signature_request_id
+        signature_request_edit_embedded_request,
+    )
 
-  p response
+    p response
 rescue Dropbox::Sign::ApiError => e
-  puts "Exception when calling SignatureRequestApi#signature_request_edit_embedded: #{e}"
+    puts "Exception when calling SignatureRequestApi#signature_request_edit_embedded: #{e}"
 end

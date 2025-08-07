@@ -2,8 +2,8 @@ require "json"
 require "dropbox-sign"
 
 Dropbox::Sign.configure do |config|
-  config.username = "YOUR_API_KEY"
-  # config.access_token = "YOUR_ACCESS_TOKEN"
+    config.username = "YOUR_API_KEY"
+    # config.access_token = "YOUR_ACCESS_TOKEN"
 end
 
 field_options = Dropbox::Sign::SubFieldOptions.new
@@ -86,11 +86,11 @@ template_create_request.form_fields_per_document = form_fields_per_document
 template_create_request.merge_fields = merge_fields
 
 begin
-  response = Dropbox::Sign::TemplateApi.new.template_create(
-    template_create_request,
-  )
+    response = Dropbox::Sign::TemplateApi.new.template_create(
+        template_create_request,
+    )
 
-  p response
+    p response
 rescue Dropbox::Sign::ApiError => e
-  puts "Exception when calling TemplateApi#template_create: #{e}"
+    puts "Exception when calling TemplateApi#template_create: #{e}"
 end
