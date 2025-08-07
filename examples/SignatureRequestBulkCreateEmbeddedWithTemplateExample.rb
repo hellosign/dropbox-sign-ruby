@@ -2,7 +2,7 @@ require "json"
 require "dropbox-sign"
 
 Dropbox::Sign.configure do |config|
-    config.username = "YOUR_API_KEY"
+  config.username = "YOUR_API_KEY"
 end
 
 signer_list_2_custom_fields_1 = Dropbox::Sign::SubBulkSignerListCustomField.new
@@ -74,11 +74,11 @@ signature_request_bulk_create_embedded_with_template_request.signer_list = signe
 signature_request_bulk_create_embedded_with_template_request.ccs = ccs
 
 begin
-    response = Dropbox::Sign::SignatureRequestApi.new.signature_request_bulk_create_embedded_with_template(
-        signature_request_bulk_create_embedded_with_template_request,
-    )
+  response = Dropbox::Sign::SignatureRequestApi.new.signature_request_bulk_create_embedded_with_template(
+    signature_request_bulk_create_embedded_with_template_request,
+  )
 
-    p response
+  p response
 rescue Dropbox::Sign::ApiError => e
-    puts "Exception when calling SignatureRequestApi#signature_request_bulk_create_embedded_with_template: #{e}"
+  puts "Exception when calling SignatureRequestApi#signature_request_bulk_create_embedded_with_template: #{e}"
 end

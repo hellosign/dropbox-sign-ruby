@@ -2,8 +2,8 @@ require "json"
 require "dropbox-sign"
 
 Dropbox::Sign.configure do |config|
-    config.username = "YOUR_API_KEY"
-    # config.access_token = "YOUR_ACCESS_TOKEN"
+  config.username = "YOUR_API_KEY"
+  # config.access_token = "YOUR_ACCESS_TOKEN"
 end
 
 oauth = Dropbox::Sign::SubOAuth.new
@@ -27,11 +27,11 @@ api_app_create_request.oauth = oauth
 api_app_create_request.white_labeling_options = white_labeling_options
 
 begin
-    response = Dropbox::Sign::ApiAppApi.new.api_app_create(
-        api_app_create_request,
-    )
+  response = Dropbox::Sign::ApiAppApi.new.api_app_create(
+    api_app_create_request,
+  )
 
-    p response
+  p response
 rescue Dropbox::Sign::ApiError => e
-    puts "Exception when calling ApiAppApi#api_app_create: #{e}"
+  puts "Exception when calling ApiAppApi#api_app_create: #{e}"
 end
