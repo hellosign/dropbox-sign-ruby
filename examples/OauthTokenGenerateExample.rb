@@ -12,11 +12,11 @@ o_auth_token_generate_request.state = "900e06e2"
 o_auth_token_generate_request.grant_type = "authorization_code"
 
 begin
-  response = Dropbox::Sign::OAuthApi.new.oauth_token_generate(
-    o_auth_token_generate_request,
-  )
+    response = Dropbox::Sign::OAuthApi.new.oauth_token_generate(
+        o_auth_token_generate_request,
+    )
 
-  p response
+    p response
 rescue Dropbox::Sign::ApiError => e
-  puts "Exception when calling OAuthApi#oauth_token_generate: #{e}"
+    puts "Exception when calling OAuthApi#oauth_token_generate: #{e}"
 end
