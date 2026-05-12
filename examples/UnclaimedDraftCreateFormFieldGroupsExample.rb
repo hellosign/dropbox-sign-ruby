@@ -2,8 +2,8 @@ require "json"
 require "dropbox-sign"
 
 Dropbox::Sign.configure do |config|
-    config.username = "YOUR_API_KEY"
-    # config.access_token = "YOUR_ACCESS_TOKEN"
+  config.username = "YOUR_API_KEY"
+  # config.access_token = "YOUR_ACCESS_TOKEN"
 end
 
 form_field_groups_1 = Dropbox::Sign::SubFormFieldGroup.new
@@ -60,11 +60,11 @@ unclaimed_draft_create_request.form_field_groups = form_field_groups
 unclaimed_draft_create_request.form_fields_per_document = form_fields_per_document
 
 begin
-    response = Dropbox::Sign::UnclaimedDraftApi.new.unclaimed_draft_create(
-        unclaimed_draft_create_request,
-    )
+  response = Dropbox::Sign::UnclaimedDraftApi.new.unclaimed_draft_create(
+    unclaimed_draft_create_request,
+  )
 
-    p response
+  p response
 rescue Dropbox::Sign::ApiError => e
-    puts "Exception when calling UnclaimedDraftApi#unclaimed_draft_create: #{e}"
+  puts "Exception when calling UnclaimedDraftApi#unclaimed_draft_create: #{e}"
 end

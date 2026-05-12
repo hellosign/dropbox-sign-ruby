@@ -2,8 +2,8 @@ require "json"
 require "dropbox-sign"
 
 Dropbox::Sign.configure do |config|
-    config.username = "YOUR_API_KEY"
-    # config.access_token = "YOUR_ACCESS_TOKEN"
+  config.username = "YOUR_API_KEY"
+  # config.access_token = "YOUR_ACCESS_TOKEN"
 end
 
 ccs_1 = Dropbox::Sign::SubCC.new
@@ -34,11 +34,11 @@ unclaimed_draft_create_embedded_with_template_request.ccs = ccs
 unclaimed_draft_create_embedded_with_template_request.signers = signers
 
 begin
-    response = Dropbox::Sign::UnclaimedDraftApi.new.unclaimed_draft_create_embedded_with_template(
-        unclaimed_draft_create_embedded_with_template_request,
-    )
+  response = Dropbox::Sign::UnclaimedDraftApi.new.unclaimed_draft_create_embedded_with_template(
+    unclaimed_draft_create_embedded_with_template_request,
+  )
 
-    p response
+  p response
 rescue Dropbox::Sign::ApiError => e
-    puts "Exception when calling UnclaimedDraftApi#unclaimed_draft_create_embedded_with_template: #{e}"
+  puts "Exception when calling UnclaimedDraftApi#unclaimed_draft_create_embedded_with_template: #{e}"
 end
