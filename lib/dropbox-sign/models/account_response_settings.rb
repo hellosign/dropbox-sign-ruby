@@ -17,15 +17,26 @@ module Dropbox
 end
 
 module Dropbox::Sign
-  class TemplateEditResponse
-    # The id of the Template.
-    # @return [String]
-    attr_accessor :template_id
+  # Subset of configured settings
+  class AccountResponseSettings
+    # Returns `true` if _Custom access codes_ is enabled in Admin Console. [Read more](https://developers.hellosign.com/docs/sms-tools/walkthrough).
+    # @return [Boolean]
+    attr_accessor :signer_access_codes
+
+    # Returns `true` if _Text message_ is enabled in Admin Console. [Read more](https://developers.hellosign.com/docs/sms-tools/walkthrough).
+    # @return [Boolean]
+    attr_accessor :sms_delivery
+
+    # Returns `true` if _Signer authentication_ is enabled in Admin Console. [Read more](https://developers.hellosign.com/docs/sms-tools/walkthrough).
+    # @return [Boolean]
+    attr_accessor :sms_authentication
 
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        :'template_id' => :'template_id'
+        :'signer_access_codes' => :'signer_access_codes',
+        :'sms_delivery' => :'sms_delivery',
+        :'sms_authentication' => :'sms_authentication'
       }
     end
 
@@ -42,7 +53,9 @@ module Dropbox::Sign
     # Attribute type mapping.
     def self.openapi_types
       {
-        :'template_id' => :'String'
+        :'signer_access_codes' => :'Boolean',
+        :'sms_delivery' => :'Boolean',
+        :'sms_authentication' => :'Boolean'
       }
     end
 
@@ -69,32 +82,40 @@ module Dropbox::Sign
 
     # Attempt to instantiate and hydrate a new instance of this class
     # @param [Object] data Data to be converted
-    # @return [TemplateEditResponse]
+    # @return [AccountResponseSettings]
     def self.init(data)
       ApiClient.default.convert_to_type(
         data,
-        "TemplateEditResponse"
-      ) || TemplateEditResponse.new
+        "AccountResponseSettings"
+      ) || AccountResponseSettings.new
     end
 
     # Initializes the object
     # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       if (!attributes.is_a?(Hash))
-        fail ArgumentError, "The input argument (attributes) must be a hash in `Dropbox::Sign::TemplateEditResponse` initialize method"
+        fail ArgumentError, "The input argument (attributes) must be a hash in `Dropbox::Sign::AccountResponseSettings` initialize method"
       end
 
       # check to see if the attribute exists and convert string to symbol for hash key
       acceptable_attribute_map = self.class.acceptable_attribute_map
       attributes = attributes.each_with_object({}) { |(k, v), h|
         if (!self.class.merged_attributes.key?(k.to_sym))
-          fail ArgumentError, "`#{k}` is not a valid attribute in `Dropbox::Sign::TemplateEditResponse`. Please check the name to make sure it's valid. List of attributes: " + acceptable_attribute_map.keys.inspect
+          fail ArgumentError, "`#{k}` is not a valid attribute in `Dropbox::Sign::AccountResponseSettings`. Please check the name to make sure it's valid. List of attributes: " + acceptable_attribute_map.keys.inspect
         end
         h[k.to_sym] = v
       }
 
-      if attributes.key?(:'template_id')
-        self.template_id = attributes[:'template_id']
+      if attributes.key?(:'signer_access_codes')
+        self.signer_access_codes = attributes[:'signer_access_codes']
+      end
+
+      if attributes.key?(:'sms_delivery')
+        self.sms_delivery = attributes[:'sms_delivery']
+      end
+
+      if attributes.key?(:'sms_authentication')
+        self.sms_authentication = attributes[:'sms_authentication']
       end
     end
 
@@ -102,28 +123,13 @@ module Dropbox::Sign
     # @return Array for valid properties with the reasons
     def list_invalid_properties
       invalid_properties = Array.new
-      if @template_id.nil?
-        invalid_properties.push('invalid value for "template_id", template_id cannot be nil.')
-      end
-
       invalid_properties
     end
 
     # Check to see if the all the properties in the model are valid
     # @return true if the model is valid
     def valid?
-      return false if @template_id.nil?
       true
-    end
-
-    # Custom attribute writer method with validation
-    # @param [Object] template_id Value to be assigned
-    def template_id=(template_id)
-      if template_id.nil?
-        fail ArgumentError, 'template_id cannot be nil'
-      end
-
-      @template_id = template_id
     end
 
     # Checks equality by comparing each attribute.
@@ -131,7 +137,9 @@ module Dropbox::Sign
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
-          template_id == o.template_id
+          signer_access_codes == o.signer_access_codes &&
+          sms_delivery == o.sms_delivery &&
+          sms_authentication == o.sms_authentication
     end
 
     # @see the `==` method
@@ -143,7 +151,7 @@ module Dropbox::Sign
     # Calculates hash code according to all attributes.
     # @return [Integer] Hash code
     def hash
-      [template_id].hash
+      [signer_access_codes, sms_delivery, sms_authentication].hash
     end
 
     # Builds the object from hash
