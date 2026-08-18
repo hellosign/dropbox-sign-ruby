@@ -14,5 +14,5 @@ module Dropbox
 end
 
 module Dropbox::Sign
-  VERSION = '1.12.0'
+  VERSION = '1.13.0'
 end
