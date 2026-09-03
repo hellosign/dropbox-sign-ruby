@@ -117,7 +117,7 @@ module Dropbox::Sign
         range_code = "4XX".split('').first
         range_code_left = "#{range_code}00".to_i
         range_code_right = "#{range_code}99".to_i
-        if e.code && e.code >= range_code_left && e.code <= range_code_right
+        if e.code >= range_code_left && e.code <= range_code_right
           body = @api_client.convert_to_type(
             JSON.parse("[#{e.response_body}]", :symbolize_names => true)[0],
             "Dropbox::Sign::ErrorResponse"
@@ -129,7 +129,6 @@ module Dropbox::Sign
                e.message
         end
 
-        raise e
       end
 
       if @api_client.config.debugging
@@ -227,7 +226,7 @@ module Dropbox::Sign
         range_code = "4XX".split('').first
         range_code_left = "#{range_code}00".to_i
         range_code_right = "#{range_code}99".to_i
-        if e.code && e.code >= range_code_left && e.code <= range_code_right
+        if e.code >= range_code_left && e.code <= range_code_right
           body = @api_client.convert_to_type(
             JSON.parse("[#{e.response_body}]", :symbolize_names => true)[0],
             "Dropbox::Sign::ErrorResponse"
@@ -239,7 +238,6 @@ module Dropbox::Sign
                e.message
         end
 
-        raise e
       end
 
       if @api_client.config.debugging
@@ -337,7 +335,7 @@ module Dropbox::Sign
         range_code = "4XX".split('').first
         range_code_left = "#{range_code}00".to_i
         range_code_right = "#{range_code}99".to_i
-        if e.code && e.code >= range_code_left && e.code <= range_code_right
+        if e.code >= range_code_left && e.code <= range_code_right
           body = @api_client.convert_to_type(
             JSON.parse("[#{e.response_body}]", :symbolize_names => true)[0],
             "Dropbox::Sign::ErrorResponse"
@@ -349,7 +347,6 @@ module Dropbox::Sign
                e.message
         end
 
-        raise e
       end
 
       if @api_client.config.debugging
@@ -417,7 +414,6 @@ module Dropbox::Sign
       begin
         data, status_code, headers = @api_client.call_api(:POST, local_var_path, new_options)
       rescue Dropbox::Sign::ApiError => e
-        raise e
       end
 
       if @api_client.config.debugging
@@ -507,7 +503,7 @@ module Dropbox::Sign
         range_code = "4XX".split('').first
         range_code_left = "#{range_code}00".to_i
         range_code_right = "#{range_code}99".to_i
-        if e.code && e.code >= range_code_left && e.code <= range_code_right
+        if e.code >= range_code_left && e.code <= range_code_right
           body = @api_client.convert_to_type(
             JSON.parse("[#{e.response_body}]", :symbolize_names => true)[0],
             "Dropbox::Sign::ErrorResponse"
@@ -519,7 +515,6 @@ module Dropbox::Sign
                e.message
         end
 
-        raise e
       end
 
       if @api_client.config.debugging
@@ -602,7 +597,7 @@ module Dropbox::Sign
         range_code = "4XX".split('').first
         range_code_left = "#{range_code}00".to_i
         range_code_right = "#{range_code}99".to_i
-        if e.code && e.code >= range_code_left && e.code <= range_code_right
+        if e.code >= range_code_left && e.code <= range_code_right
           body = @api_client.convert_to_type(
             JSON.parse("[#{e.response_body}]", :symbolize_names => true)[0],
             "Dropbox::Sign::ErrorResponse"
@@ -614,7 +609,6 @@ module Dropbox::Sign
                e.message
         end
 
-        raise e
       end
 
       if @api_client.config.debugging
@@ -700,7 +694,7 @@ module Dropbox::Sign
         range_code = "4XX".split('').first
         range_code_left = "#{range_code}00".to_i
         range_code_right = "#{range_code}99".to_i
-        if e.code && e.code >= range_code_left && e.code <= range_code_right
+        if e.code >= range_code_left && e.code <= range_code_right
           body = @api_client.convert_to_type(
             JSON.parse("[#{e.response_body}]", :symbolize_names => true)[0],
             "Dropbox::Sign::ErrorResponse"
@@ -712,7 +706,6 @@ module Dropbox::Sign
                e.message
         end
 
-        raise e
       end
 
       if @api_client.config.debugging
@@ -795,7 +788,7 @@ module Dropbox::Sign
         range_code = "4XX".split('').first
         range_code_left = "#{range_code}00".to_i
         range_code_right = "#{range_code}99".to_i
-        if e.code && e.code >= range_code_left && e.code <= range_code_right
+        if e.code >= range_code_left && e.code <= range_code_right
           body = @api_client.convert_to_type(
             JSON.parse("[#{e.response_body}]", :symbolize_names => true)[0],
             "Dropbox::Sign::ErrorResponse"
@@ -807,7 +800,6 @@ module Dropbox::Sign
                e.message
         end
 
-        raise e
       end
 
       if @api_client.config.debugging
@@ -904,7 +896,7 @@ module Dropbox::Sign
         range_code = "4XX".split('').first
         range_code_left = "#{range_code}00".to_i
         range_code_right = "#{range_code}99".to_i
-        if e.code && e.code >= range_code_left && e.code <= range_code_right
+        if e.code >= range_code_left && e.code <= range_code_right
           body = @api_client.convert_to_type(
             JSON.parse("[#{e.response_body}]", :symbolize_names => true)[0],
             "Dropbox::Sign::ErrorResponse"
@@ -916,7 +908,6 @@ module Dropbox::Sign
                e.message
         end
 
-        raise e
       end
 
       if @api_client.config.debugging
@@ -1020,7 +1011,7 @@ module Dropbox::Sign
         range_code = "4XX".split('').first
         range_code_left = "#{range_code}00".to_i
         range_code_right = "#{range_code}99".to_i
-        if e.code && e.code >= range_code_left && e.code <= range_code_right
+        if e.code >= range_code_left && e.code <= range_code_right
           body = @api_client.convert_to_type(
             JSON.parse("[#{e.response_body}]", :symbolize_names => true)[0],
             "Dropbox::Sign::ErrorResponse"
@@ -1032,7 +1023,6 @@ module Dropbox::Sign
                e.message
         end
 
-        raise e
       end
 
       if @api_client.config.debugging
@@ -1136,7 +1126,7 @@ module Dropbox::Sign
         range_code = "4XX".split('').first
         range_code_left = "#{range_code}00".to_i
         range_code_right = "#{range_code}99".to_i
-        if e.code && e.code >= range_code_left && e.code <= range_code_right
+        if e.code >= range_code_left && e.code <= range_code_right
           body = @api_client.convert_to_type(
             JSON.parse("[#{e.response_body}]", :symbolize_names => true)[0],
             "Dropbox::Sign::ErrorResponse"
@@ -1148,7 +1138,6 @@ module Dropbox::Sign
                e.message
         end
 
-        raise e
       end
 
       if @api_client.config.debugging
